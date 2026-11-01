@@ -6,18 +6,18 @@ import asyncio
 from start import stert_router
 from handl.manik import manik_router
 from handl.faq import faq_router
+from bot import bot
+from handl.support import support_router
 
 
 load_dotenv()
 
-BOT_TOKEN = os.getenv("BOT_TOKEN")
-
-bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 
 dp.include_router(stert_router)
 dp.include_router(manik_router)
 dp.include_router(faq_router)
+dp.include_router(support_router)
 
 async def main():
     print("БОТ ЗАПУСТИВСЯ")

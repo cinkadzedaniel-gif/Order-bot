@@ -132,3 +132,10 @@ def back_faq():
     ]]
 )
 
+def cancel():
+   return ReplyKeyboardMarkup(
+      keyboard= [
+         [KeyboardButton(text = "Повернутись")],
+      ],
+      resize_keyboard= True
+   )
