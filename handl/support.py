@@ -36,12 +36,6 @@ async def support(message: Message, state: FSMContext):
 @support_router.message(Support.waiting_problems)
 async def user_support_message(message: Message, state: FSMContext, bot):
 
-  if message.text == "📩 Підтримка":
-      await state.clear()
-      await message.answer("Повертаємось у головне меню", reply_markup=main_keyboard())
-
-
-  else:
     user_info = (
       f"@{message.from_user.username}"
       if message.from_user.username
