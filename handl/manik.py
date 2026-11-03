@@ -171,6 +171,6 @@ async def show_admin_interface(message: Message):
       "• **Дата та час:** Завтра о 14:00\n"
       f"• **Клієнт:** {message.from_user.full_name}\n\n"
       "👇 Натисніть кнопку нижче, щоб перевірити функцію зв'язку:",
-      reply_markup=keyboard,
+      reply_markup=main_keyboard(),
       parse_mode="Markdown",
   )

@@ -28,18 +28,28 @@ async def support(message: Message, state: FSMContext):
   )
   await state.set_state(Support.waiting_problems)
 
+  if message.text == "📩 Підтримка":
+    back_to_menu()
+
 
 # 2. Отримання питання від користувача та надсилання адміністратору
 @support_router.message(Support.waiting_problems)
 async def user_support_message(message: Message, state: FSMContext, bot):
-  user_info = (
+
+  if message.text == "📩 Підтримка":
+      await state.clear()
+      await message.answer("Повертаємось у головне меню", reply_markup=main_keyboard())
+
+
+  else:
+    user_info = (
       f"@{message.from_user.username}"
       if message.from_user.username
       else "Немає username"
   )
 
   # Надсилаємо тобі картку звернення з чітко вказаним ID
-  await bot.send_message(
+    await bot.send_message(
       chat_id=ADMIN_ID,
       text=(
           f"📩 <b>Нове звернення від користувача!</b>\n"
@@ -50,12 +60,12 @@ async def user_support_message(message: Message, state: FSMContext, bot):
       parse_mode="HTML",
   )
 
-  await message.answer(
+    await message.answer(
       "Дякуємо! Ваше повідомлення передано адміністратору. Очікуйте на"
       " відповідь.",
       reply_markup=main_keyboard(),  # Повертаємо головне меню користувачу
   )
-  await state.clear()
+    await state.clear()
 
 
 # 3. Кнопка скасування / повернення
