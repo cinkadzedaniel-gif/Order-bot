@@ -28,9 +28,6 @@ async def support(message: Message, state: FSMContext):
   )
   await state.set_state(Support.waiting_problems)
 
-  if message.text == "📩 Підтримка":
-    back_to_menu()
-
 
 # 2. Отримання питання від користувача та надсилання адміністратору
 @support_router.message(Support.waiting_problems)

@@ -7,13 +7,18 @@ from start import stert_router
 from handl.manik import manik_router
 from handl.faq import faq_router
 from bot import bot
+from handl.tz import tz_router
 from handl.support import support_router
+from handl.canlc import canlc_router
 
 
 load_dotenv()
 
 dp = Dispatcher()
 
+
+dp.include_router(canlc_router)
+dp.include_router(tz_router)
 dp.include_router(stert_router)
 dp.include_router(manik_router)
 dp.include_router(faq_router)

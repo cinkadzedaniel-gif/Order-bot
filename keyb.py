@@ -139,3 +139,34 @@ def cancel():
       ],
       resize_keyboard= True
    )
+
+
+def cancel_keyboard():
+      return ReplyKeyboardMarkup(
+      keyboard=[[KeyboardButton(text="❌ Скасувати")]],
+      resize_keyboard=True,
+  )
+
+
+
+
+def service_keyboard():
+  return ReplyKeyboardMarkup(
+      keyboard=[
+          [KeyboardButton(text="🛒 Інтернет-магазин")],
+          [KeyboardButton(text="📅 Бот для запису")],
+          [KeyboardButton(text="❌ Скасувати")],
+      ],
+      resize_keyboard=True,
+  )
+
+
+def design_keyboard():
+  return ReplyKeyboardMarkup(
+      keyboard=[
+          [KeyboardButton(text="✨ Стандартний дизайн")],
+          [KeyboardButton(text="🎨 Індивідуальний унікальний дизайн")],
+          [KeyboardButton(text="❌ Скасувати")],
+      ],
+      resize_keyboard=True,
+  )
