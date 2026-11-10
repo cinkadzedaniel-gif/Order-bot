@@ -6,6 +6,7 @@ from aiogram.types import Message
 from bot import bot
 from dotenv import load_dotenv
 from keyb import cancel_keyboard, main_keyboard, share_number
+from base import User
 
 load_dotenv()
 
@@ -82,20 +83,27 @@ async def waiting_contact(message: Message, state: FSMContext):
   phone = message.contact.phone_number if message.contact else message.text
 
   user_data = await state.get_data()
+  types = user_data.get("types")
+  func = user_data.get("func")
+  budget = user_data.get("budget")
 
   username = (
       f"@{message.from_user.username}"
       if message.from_user.username
       else "Не вказано"
   )
+  user_id = message.from_user.id
+
+  new_user = User(id = user_id, username = username, types = types, func = func, budget = budget  )
+
 
   admin_text = (
       f"📋 <b>НОВА ЗАЯВКА НА РОЗРОБКУ (ТЗ)!</b>\n\n"
       f"👤 <b>Замовник:</b> {username} (ID: <code>{message.from_user.id}</code>)\n"
       f"📞 <b>Контакт:</b> {phone}\n"
-      f"📌 <b>Тип бота:</b> {user_data.get('types')}\n"
-      f"🛠 <b>Функціонал:</b> {user_data.get('func')}\n"
-      f"💰 <b>Бюджет/Терміни:</b> {user_data.get('budget')}"
+      f"📌 <b>Тип бота:</b> {types}\n"
+      f"🛠 <b>Функціонал:</b> {func}\n"
+      f"💰 <b>Бюджет/Терміни:</b> {budget}"
   )
 
   await bot.send_message(chat_id=ADMIN_ID, text=admin_text, parse_mode="HTML")

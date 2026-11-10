@@ -58,15 +58,15 @@ async def waiting_disign(message:Message, state: FSMContext):
     service = data.get("service")
     design = data.get("design")
 
-    price = "від 100$"
+    price = 100
     if "Інтернет-магазин" in service:
-        price = "від 200$"
+        price += 50
 
     elif " Бот для запису" in service:
-        price = "від 250$"
+        price += 50
 
     if "Індивідуальний" in design:
-        price = "оцінюється індивідуально (від $300)"
+        price += 150
 
 
     username = (
@@ -79,7 +79,7 @@ async def waiting_disign(message:Message, state: FSMContext):
       f"📊 <b>Результат попереднього розрахунку:</b>\n\n"
       f"📌 <b>Тип:</b> {service}\n"
       f"🎨 <b>Дизайн:</b> {design}\n"
-      f"💰 <b>Орієнтовна вартість:</b> <b>{price}</b>\n\n"
+      f"💰 <b>Орієнтовна вартість:</b> <b>від {price}</b>, оцінюється ідивідуально\n\n"
       "Ми надіслали ваші дані адміністратору, він зв'яжеться з вами для"
       " уточнення деталей!",
       reply_markup=main_keyboard(),
@@ -90,7 +90,7 @@ async def waiting_disign(message:Message, state: FSMContext):
       f"👤 <b>Користувач:</b> {username} (ID: <code>{message.from_user.id}</code>)\n"
       f"📌 <b>Тип:</b> {service}\n"
       f"🎨 <b>Дизайн:</b> {design}\n"
-      f"💰 <b>Орієнтовно:</b> {price}"
+      f"💰 <b>Орієнтовно:</b> від {price}"
   )
 
 
