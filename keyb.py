@@ -13,10 +13,32 @@ def main_keyboard():
               KeyboardButton(text="💰 Розрахувати вартість"),
               KeyboardButton(text="❓ Поширені питання"),
           ],
-          [KeyboardButton(text = "📩 Підтримка")]
+          [
+            KeyboardButton(text = "📩 Підтримка")],
       ],
       resize_keyboard=True,
   )
+
+
+
+def admin_main_keyboard():
+  return ReplyKeyboardMarkup(
+      keyboard=[
+          [
+              KeyboardButton(text="📝 Залишити заявку (ТЗ)"),
+              KeyboardButton(text="📂 Приклади робіт"),
+          ],
+          [
+              KeyboardButton(text="💰 Розрахувати вартість"),
+              KeyboardButton(text="❓ Поширені питання"),
+          ],
+          [ KeyboardButton(text = "📩 Підтримка"), 
+            KeyboardButton(text="🔐 Адмін-панель"),
+         ],
+      ],
+      resize_keyboard=True,
+  )
+
 
 
 def roboty_keyboard():
@@ -151,22 +173,32 @@ def cancel_keyboard():
 
 
 def service_keyboard():
-  return ReplyKeyboardMarkup(
-      keyboard=[
-          [KeyboardButton(text="🛒 Інтернет-магазин")],
-          [KeyboardButton(text="📅 Бот для запису")],
-          [KeyboardButton(text="❌ Скасувати")],
+  return InlineKeyboardMarkup(
+      inline_keyboard=[
+          [InlineKeyboardButton(text="🛒 Інтернет-магазин", callback_data="inter"), ],
+          [InlineKeyboardButton(text="📅 Бот для запису",callback_data="zapys")],
+          [InlineKeyboardButton(text="❌ Скасувати", callback_data="back")],
       ],
       resize_keyboard=True,
   )
 
 
 def design_keyboard():
-  return ReplyKeyboardMarkup(
-      keyboard=[
-          [KeyboardButton(text="✨ Стандартний дизайн")],
-          [KeyboardButton(text="🎨 Індивідуальний унікальний дизайн")],
-          [KeyboardButton(text="❌ Скасувати")],
+  return InlineKeyboardMarkup(
+      inline_keyboard=[
+          [InlineKeyboardButton(text="✨ Стандартний дизайн", callback_data="standart")],
+          [InlineKeyboardButton(text="🎨 Індивідуальний унікальний дизайн", callback_data="indiv")],
+          [InlineKeyboardButton(text="❌ Скасувати", callback_data="back")],
       ],
       resize_keyboard=True,
   )
+
+
+
+def admin_panel():
+   return ReplyKeyboardMarkup(
+      keyboard= [ 
+        [KeyboardButton(text="Усі користувачі")],
+        [KeyboardButton(text="У головне меню")],
+      ]
+   )

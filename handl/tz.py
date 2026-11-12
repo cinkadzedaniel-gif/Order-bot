@@ -6,7 +6,7 @@ from aiogram.types import Message
 from bot import bot
 from dotenv import load_dotenv
 from keyb import cancel_keyboard, main_keyboard, share_number
-from base import User
+from base import User, Session
 
 load_dotenv()
 
@@ -77,40 +77,56 @@ async def waiting_busget(message: Message, state: FSMContext):
   )
   await state.set_state(TZ.waiting_for_contact)
 
-
 @tz_router.message(TZ.waiting_for_contact)
 async def waiting_contact(message: Message, state: FSMContext):
-  phone = message.contact.phone_number if message.contact else message.text
+    phone = message.contact.phone_number if message.contact else message.text
 
-  user_data = await state.get_data()
-  types = user_data.get("types")
-  func = user_data.get("func")
-  budget = user_data.get("budget")
+    user_data = await state.get_data()
+    types = user_data.get("types")
+    func = user_data.get("func")
+    budget = user_data.get("budget")
 
-  username = (
-      f"@{message.from_user.username}"
-      if message.from_user.username
-      else "Не вказано"
-  )
-  user_id = message.from_user.id
+    username = (
+        f"@{message.from_user.username}"
+        if message.from_user.username
+        else "Не вказано"
+    )
+    user_id = message.from_user.id
 
-  new_user = User(id = user_id, username = username, types = types, func = func, budget = budget  )
+    # 1. Створюємо сесію для роботи з базою даних
+    db_session = Session()
+    try:
+        # 2. Створюємо запис користувача
+        new_user = User(
+            id=user_id, 
+            username=username, 
+            types=types, 
+            func=func, 
+            budget=budget
+        )
+        
+        # 3. Додаємо в сесію та зберігаємо в базу даних
+        db_session.add(new_user)
+        db_session.commit()
+    except Exception as e:
+        print(f"Помилка збереження в БД: {e}")
+        db_session.rollback()
+    finally:
+        db_session.close() # Обов'язково закриваємо сесію
 
+    admin_text = (
+        f"📋 <b>НОВА ЗАЯВКА НА РОЗРОБКУ (ТЗ)!</b>\n\n"
+        f"👤 <b>Замовник:</b> {username} (ID: <code>{message.from_user.id}</code>)\n"
+        f"📞 <b>Контакт:</b> {phone}\n"
+        f"📌 <b>Тип бота:</b> {types}\n"
+        f"🛠 <b>Функціонал:</b> {func}\n"
+        f"💰 <b>Бюджет/Терміни:</b> {budget}"
+    )
 
-  admin_text = (
-      f"📋 <b>НОВА ЗАЯВКА НА РОЗРОБКУ (ТЗ)!</b>\n\n"
-      f"👤 <b>Замовник:</b> {username} (ID: <code>{message.from_user.id}</code>)\n"
-      f"📞 <b>Контакт:</b> {phone}\n"
-      f"📌 <b>Тип бота:</b> {types}\n"
-      f"🛠 <b>Функціонал:</b> {func}\n"
-      f"💰 <b>Бюджет/Терміни:</b> {budget}"
-  )
+    await bot.send_message(chat_id=ADMIN_ID, text=admin_text, parse_mode="HTML")
 
-  await bot.send_message(chat_id=ADMIN_ID, text=admin_text, parse_mode="HTML")
-
-  await message.answer(
-      "Дякуємо! Ваша заявка успішно прийнята. Ми зв'яжемося з вами найближчим"
-      " часом!",
-      reply_markup=main_keyboard(),
-  )
-  await state.clear()
+    await message.answer(
+        "Дякуємо! Ваша заявка успішно прийнята. Ми зв'яжемося з вами найближчим часом!",
+        reply_markup=main_keyboard(),
+    )
+    await state.clear()

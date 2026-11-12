@@ -10,6 +10,7 @@ from bot import bot
 from handl.tz import tz_router
 from handl.support import support_router
 from handl.canlc import canlc_router
+from handl.admin_panel import admin_router
 
 
 load_dotenv()
@@ -17,6 +18,7 @@ load_dotenv()
 dp = Dispatcher()
 
 
+dp.include_router(admin_router)
 dp.include_router(canlc_router)
 dp.include_router(tz_router)
 dp.include_router(start_router)
